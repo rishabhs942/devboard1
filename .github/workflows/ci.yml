@@ -21,7 +21,7 @@ jobs:
               with:
                 node-version: '20'
                 cache: npm
-                cache-depeendency-path: frontend/package-lock.json
+                cache-dependency-path: ./frontend/package-lock.json
 
             - name: Install npm Packages
               run: npm install
@@ -46,4 +46,4 @@ jobs:
               with:
                 context: ./frontend
                 push: true
-                tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest           
+                tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard1-frontend:latest           
