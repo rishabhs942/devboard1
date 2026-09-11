@@ -7,7 +7,7 @@ on:
         # paths:
         #   - '**'
         #   - '!.github/workflows/**'
-        branches: [feat/matrix-docker-build]
+        branches: [DevSecOps]
 
 jobs:
     lint-frontend:

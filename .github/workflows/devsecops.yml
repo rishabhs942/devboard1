@@ -1,0 +1,21 @@
+# To run end to end DevSecOps CI Pipeline
+
+name: DevSecOps
+
+on:
+    push:
+        branches: DevSecOps
+
+jobs:
+    ## CI
+    # code stage
+    code-quality:
+        uses: ./.github/workflows/code-quality.yml
+
+    # Secret Scanning
+    secret-scanning:
+        uses: ./.github/workflows/secret-scanning.yml
+
+    # Dependency Checks
+    dependency-checks:
+        uses: ./.github/workflows/dependency-scan.yml
