@@ -27,5 +27,6 @@ jobs:
               working-directory: backend
 
             - name: Run Go Vet
+              run: go vet
               working-directory: backend
               
