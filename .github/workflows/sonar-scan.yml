@@ -1,4 +1,4 @@
-# Goal - to check whether the application code coverage doesn't have security threats/issues
+# Goal - to check whether the application code coverage doesn't have security threats/issue
 
 name: Sonar Qube Scan
 
