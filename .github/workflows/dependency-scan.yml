@@ -15,33 +15,45 @@ jobs:
             - name: Setup Go
               uses: actions/setup-go@v6
               with:
-                go-version: 1.22
-                go-version-file: 'go.mod'
-                cache-dependency-path: go.sum
+                #go-version: 1.22
+                go-version-file: backend/go.mod
+                cache: true
+                cache-dependency-path: backend/go.sum
 
             - name: Install Govulncheck
-              run: go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+              run: go install golang.org/x/vuln/cmd/govulncheck@latest
 
             - name: Govulncheck
               continue-on-error: true
-              run: govulncheck ./... > govulcheck-report.txt
-              working-directory: backend
+              run: |
+                mkdir -p reports
+                govulncheck ./... 2>&1 | tee reports/govulncheck-report.txt
+
 
             - name: Setup Node
-              uses: actions/setup-node@v6
+              uses: actions/setup-node@v7
               with:
-                node-version: '20'
+                node-version: '24'
                 cache: npm
                 cache-dependency-path: frontend/package-lock.json
 
-            - name: Run Dependency scan for Node
-              run: npm audit
+            - name: Install Node dependencies
               working-directory: frontend
+              run: npm ci
+
+            - name: Run npm audit
+              working-directory: frontend
+              run: |
+                mkdir -p reports
+                npm audit --audit-level=high 2>&1 | tee reports/npm-audit-report.txt
+
 
             - name: Upload Report to  Artifacts
               if: always()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v6
               with:
                 name: dependency-scan-report
-                path: reports/dependency-report.txt
+                path: |
+                  backend/reports/govulncheck-report.txt
+                  frontend/reports/npm-audit-report.txt
                 retention-days: 5
